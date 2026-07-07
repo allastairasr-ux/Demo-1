@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Menu, X } from 'lucide-react'
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 
 interface HeaderProps {
   onBookClick?: () => void
@@ -39,16 +40,18 @@ export default function Header({ onBookClick }: HeaderProps) {
     >
       <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex items-center justify-between">
         {/* Logo */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
-          className="flex items-center gap-2"
-        >
-          <div className="text-2xl md:text-3xl font-serif font-bold bg-gradient-to-r from-accent to-yellow-300 bg-clip-text text-transparent">
-            AURA
-          </div>
-        </motion.div>
+        <Link href="/">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+            className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity"
+          >
+            <div className="text-2xl md:text-3xl font-serif font-bold bg-gradient-to-r from-accent to-yellow-300 bg-clip-text text-transparent">
+              AURA
+            </div>
+          </motion.div>
+        </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-8">
