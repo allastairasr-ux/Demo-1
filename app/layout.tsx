@@ -43,28 +43,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="bg-background scroll-smooth">
-      <head>
-        <script
-          type="text/javascript"
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function(d, t) {
-                  var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
-                  v.onload = function() {
-                    window.voiceflow.chat.load({
-                      verify: { projectID: '6a44449f3cd8b5e7a16f4665' },
-                      url: 'https://general-runtime.voiceflow.com',
-                      voice: {
-                        url: "https://runtime-api.voiceflow.com"
-                      }
-                    });
-                  }
-                  v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
-              })(document, 'script');
-            `,
-          }}
-        />
-      </head>
       <body className={`${geist.className} antialiased bg-background text-foreground`}>
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
