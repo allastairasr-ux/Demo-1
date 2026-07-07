@@ -8,6 +8,8 @@ interface CTAProps {
   buttonText: string
   onCtaClick?: () => void
   variant?: 'default' | 'accent'
+  onLearnMore?: () => void
+  showLearnMore?: boolean
 }
 
 export default function CTA({
@@ -16,6 +18,8 @@ export default function CTA({
   buttonText,
   onCtaClick,
   variant = 'default',
+  onLearnMore,
+  showLearnMore = false,
 }: CTAProps) {
   const bgClass =
     variant === 'accent'
@@ -40,9 +44,16 @@ export default function CTA({
             {description}
           </p>
 
-          <button onClick={onCtaClick} className="btn-primary">
-            {buttonText}
-          </button>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <button onClick={onCtaClick} className="btn-primary">
+              {buttonText}
+            </button>
+            {showLearnMore && (
+              <button onClick={onLearnMore} className="btn-secondary">
+                Learn More
+              </button>
+            )}
+          </div>
         </motion.div>
       </div>
     </section>

@@ -11,13 +11,17 @@ import Footer from '@/components/Footer'
 import BookingModal from '@/components/BookingModal'
 import ScrollToTop from '@/components/ScrollToTop'
 import CTA from '@/components/CTA'
+import MembershipModal from '@/components/MembershipModal'
 import { useState } from 'react'
 
 export default function Page() {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isMembershipModalOpen, setIsMembershipModalOpen] = useState(false)
 
   const openModal = () => setIsModalOpen(true)
   const closeModal = () => setIsModalOpen(false)
+  const openMembershipModal = () => setIsMembershipModalOpen(true)
+  const closeMembershipModal = () => setIsMembershipModalOpen(false)
 
   return (
     <main className="relative bg-background text-foreground">
@@ -40,9 +44,12 @@ export default function Page() {
         buttonText="Reserve Your Membership Today"
         onCtaClick={openModal}
         variant="accent"
+        showLearnMore={true}
+        onLearnMore={openMembershipModal}
       />
       <Footer onBookClick={openModal} />
       <BookingModal isOpen={isModalOpen} onClose={closeModal} />
+      <MembershipModal isOpen={isMembershipModalOpen} onClose={closeMembershipModal} />
       <ScrollToTop />
     </main>
   )
