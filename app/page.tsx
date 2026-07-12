@@ -12,33 +12,62 @@ import BookingModal from '@/components/BookingModal'
 import ScrollToTop from '@/components/ScrollToTop'
 import CTA from '@/components/CTA'
 import MembershipModal from '@/components/MembershipModal'
-import { useState } from 'react'
+import WhyChooseUs from '@/components/WhyChooseUs'
+import Team from '@/components/Team'
+import MobileCTABar from '@/components/MobileCTABar'
+import ExitIntentModal from '@/components/ExitIntentModal'
+import { useState, useEffect, useCallback } from 'react'
 
 export default function Page() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isMembershipModalOpen, setIsMembershipModalOpen] = useState(false)
+  const [isExitIntentOpen, setIsExitIntentOpen] = useState(false)
+  const [hasShownExitIntent, setHasShownExitIntent] = useState(false)
 
   const openModal = () => setIsModalOpen(true)
   const closeModal = () => setIsModalOpen(false)
   const openMembershipModal = () => setIsMembershipModalOpen(true)
   const closeMembershipModal = () => setIsMembershipModalOpen(false)
+  const closeExitIntent = () => setIsExitIntentOpen(false)
+
+  useEffect(() => {
+    if (hasShownExitIntent) return
+
+    const handleMouseLeave = (e: MouseEvent) => {
+      if (e.clientY <= 0) {
+        setIsExitIntentOpen(true)
+        setHasShownExitIntent(true)
+      }
+    }
+
+    const timer = setTimeout(() => {
+      document.addEventListener('mouseleave', handleMouseLeave)
+    }, 3000)
+
+    return () => {
+      clearTimeout(timer)
+      document.removeEventListener('mouseleave', handleMouseLeave)
+    }
+  }, [hasShownExitIntent])
 
   return (
-    <main className="relative bg-background text-foreground">
+    <main id="main-content" className="relative bg-background text-foreground">
       <Header onBookClick={openModal} />
       <Hero onBookClick={openModal} />
       <Services />
-      <CTA 
+      <CTA
         title="Ready to Transform Your Skin?"
         description="Book a complimentary consultation with our expert team to discuss your aesthetic goals."
         buttonText="Book Your Consultation"
         onCtaClick={openModal}
       />
       <BeforeAfter />
+      <WhyChooseUs />
+      <Team />
       <Pricing onBookClick={openModal} />
       <Testimonials />
       <FAQ />
-      <CTA 
+      <CTA
         title="Join Our Loyalty Program"
         description="Become a member and enjoy exclusive benefits, priority booking, and special member-only pricing."
         buttonText="Reserve Your Membership Today"
@@ -50,6 +79,8 @@ export default function Page() {
       <Footer onBookClick={openModal} />
       <BookingModal isOpen={isModalOpen} onClose={closeModal} />
       <MembershipModal isOpen={isMembershipModalOpen} onClose={closeMembershipModal} />
+      <ExitIntentModal isOpen={isExitIntentOpen} onClose={closeExitIntent} />
+      <MobileCTABar onBookClick={openModal} />
       <ScrollToTop />
     </main>
   )

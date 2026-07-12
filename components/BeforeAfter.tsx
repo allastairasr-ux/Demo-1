@@ -40,12 +40,21 @@ export default function BeforeAfter() {
   const [sliderPosition, setSliderPosition] = useState(50)
   const current = results[activeIndex]
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const container = e.currentTarget
+  const updateSliderFromClientX = (container: HTMLDivElement, clientX: number) => {
     const rect = container.getBoundingClientRect()
-    const x = e.clientX - rect.left
+    const x = clientX - rect.left
     const percentage = (x / rect.width) * 100
     setSliderPosition(Math.max(0, Math.min(100, percentage)))
+  }
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    updateSliderFromClientX(e.currentTarget, e.clientX)
+  }
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (e.touches[0]) {
+      updateSliderFromClientX(e.currentTarget, e.touches[0].clientX)
+    }
   }
 
   return (
@@ -80,7 +89,8 @@ export default function BeforeAfter() {
         >
           <div
             onMouseMove={handleMouseMove}
-            className="card relative w-full max-w-4xl mx-auto overflow-hidden cursor-col-resize group"
+            onTouchMove={handleTouchMove}
+            className="card relative w-full max-w-4xl mx-auto overflow-hidden cursor-col-resize group touch-none"
           >
             {/* Before Image */}
             <div className="relative w-full aspect-[4/3] md:aspect-[16/9] bg-black">

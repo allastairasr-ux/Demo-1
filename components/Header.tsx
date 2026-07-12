@@ -12,6 +12,7 @@ interface HeaderProps {
 export default function Header({ onBookClick }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
+  const [activeSection, setActiveSection] = useState<string>('')
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,13 +23,51 @@ export default function Header({ onBookClick }: HeaderProps) {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  useEffect(() => {
+    const sections = ['services', 'before-after', 'pricing', 'faq', 'team', 'why-us']
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id)
+          }
+        })
+      },
+      { rootMargin: '-40% 0px -55% 0px' }
+    )
+
+    sections.forEach((id) => {
+      const el = document.getElementById(id)
+      if (el) observer.observe(el)
+    })
+
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsMenuOpen(false)
+    }
+    if (isMenuOpen) {
+      document.addEventListener('keydown', handleKeyDown)
+      return () => document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [isMenuOpen])
+
   const menuItems = [
     { label: 'Treatments', href: '#services' },
     { label: 'Results', href: '#before-after' },
     { label: 'Pricing', href: '#pricing' },
+    { label: 'Team', href: '#team' },
     { label: 'FAQ', href: '#faq' },
     { label: 'Contact', href: '/contact' },
   ]
+
+  const isActive = (href: string) => {
+    if (href.startsWith('/')) return false
+    return activeSection === href.slice(1)
+  }
 
   return (
     <header
@@ -59,9 +98,19 @@ export default function Header({ onBookClick }: HeaderProps) {
             <a
               key={item.label}
               href={item.href}
-              className="text-foreground text-sm hover:text-accent transition-colors duration-200"
+              className={`text-sm transition-colors duration-200 relative ${
+                isActive(item.href)
+                  ? 'text-accent'
+                  : 'text-foreground hover:text-accent'
+              }`}
             >
               {item.label}
+              {isActive(item.href) && (
+                <motion.span
+                  layoutId="nav-underline"
+                  className="absolute -bottom-1 left-0 right-0 h-0.5 bg-accent rounded-full"
+                />
+              )}
             </a>
           ))}
         </nav>
@@ -80,6 +129,7 @@ export default function Header({ onBookClick }: HeaderProps) {
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="md:hidden text-foreground hover:text-accent transition-colors"
             aria-label="Toggle menu"
+            aria-expanded={isMenuOpen}
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -98,7 +148,11 @@ export default function Header({ onBookClick }: HeaderProps) {
             <a
               key={item.label}
               href={item.href}
-              className="block text-foreground hover:text-accent transition-colors py-2"
+              className={`block py-2 transition-colors ${
+                isActive(item.href)
+                  ? 'text-accent'
+                  : 'text-foreground hover:text-accent'
+              }`}
               onClick={() => setIsMenuOpen(false)}
             >
               {item.label}

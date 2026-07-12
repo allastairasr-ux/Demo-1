@@ -69,7 +69,7 @@ export default function ContactPage() {
   ]
 
   return (
-    <main className="relative bg-background text-foreground min-h-screen">
+    <main id="main-content" className="relative bg-background text-foreground min-h-screen">
       <Header onBookClick={() => setIsModalOpen(true)} />
 
       <div className="pt-32 pb-20 px-4 md:px-6 lg:px-8">

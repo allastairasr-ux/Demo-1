@@ -60,6 +60,15 @@ export default function Hero({ onBookClick }: HeroProps) {
               View Results
             </button>
           </div>
+
+          {/* Trust microcopy */}
+          <div className="flex items-center gap-4 pt-6 justify-center md:justify-start">
+            <span className="text-xs text-gray-400">No obligation</span>
+            <span className="text-gray-600">•</span>
+            <span className="text-xs text-gray-400">100% complimentary</span>
+            <span className="text-gray-600">•</span>
+            <span className="text-xs text-gray-400">24-hour response</span>
+          </div>
         </motion.div>
       </div>
 

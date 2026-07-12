@@ -101,7 +101,7 @@ export default function Services() {
                 </p>
 
                 <a
-                  href="#"
+                  href="#contact"
                   className="text-accent text-sm font-medium hover:text-yellow-300 transition-colors inline-flex items-center gap-2"
                 >
                   Learn More →
