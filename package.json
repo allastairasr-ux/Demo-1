@@ -11,6 +11,7 @@
   "dependencies": {
     "@base-ui/react": "^1.5.0",
     "@headlessui/react": "^2.2.10",
+    "@netlify/plugin-nextjs": "^5.15.12",
     "@radix-ui/react-dialog": "^1.1.18",
     "@vercel/analytics": "1.6.1",
     "@vercel/speed-insights": "^2.0.0",
